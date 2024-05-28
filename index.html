@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8">
+    <link rel="icon" href="/favicon.png">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>100 Year Week Calendar</title>
+    <meta name="description" content="Discover your age in weeks">
+    <meta name="keywords" content="Discover your age in weeks">
+    <meta name="og:title" content="100 Year Week Calendar">
+    <meta name="og:description" content="Discover your age in weeks">
+    <meta name="og:image" content="/favicon.png">
+
+    <style>
+      * {
+        box-sizing: border-box;
+      }
+      
+      html, body {
+        user-select: none;
+        -moz-user-select: none;
+        -webkit-user-select: none;
+        -ms-user-select: none;
+        -khtml-user-select: none;
+
+        background-color: #f0f0f0;
+        margin: 0;
+        padding: 0;
+        min-width: 100%;
+        min-height: 100%;
+        font-size: 16px;
+      }
+
+      main {
+        text-align: center;
+        margin: 20px 10px;
+      }
+
+      #calendar {
+        visibility: hidden;
+      }
+
+      #landing {
+        visibility: hidden;
+      }
+
+      #weeksContainer {
+        display: grid;
+        grid-template-columns: repeat(66, 1fr);
+        gap: 6px;
+        max-width: 1700px;
+        margin: auto;
+        * {
+          width: 14px;
+          height: 14px;
+        }
+      }
+
+      .square {
+        align-self: center;
+        justify-self: center;
+        width: 10px;
+        height: 10px;
+        background-color: #000;
+        border: 2px solid #000;
+      }
+
+      .empty {
+        width: 10px;
+        height: 10px;
+      }
+
+      .number {
+        text-align: center;
+        width: 16px;
+        height: 16px;
+      }
+
+    </style>
+  </head>
+  <body>
+    <main id="calendar">
+      <p id="birth"></p>
+      <p>weeks: ➡ years: ⬇</p>
+      <div id="weeksContainer"></div>
+    </main>
+
+    <main id="landing">
+      <h1>Select your birthday</h1>
+      <input placeholder="Set birthday" type="date"/>
+      <button id="submitButton">Submit</button>
+    </main>
+
+    <script>
+      var urlParams = new URLSearchParams(window.location.search);
+      var birthDateParam = urlParams.get('bd');
+      var calendarContainer = document.getElementById('calendar');
+      var landingContainer = document.getElementById('landing');
+      var submitButton = document.getElementById('submitButton');
+      if (birthDateParam === null) {
+        calendarContainer.style.visibility = 'hidden';
+        landingContainer.style.visibility = 'visible';
+        submitButton.addEventListener('click', () => {
+          var input = document.querySelector('input');
+          var birthDate = input.value;
+          window.location.href = window.location.href + '?bd=' + birthDate;
+        });
+      } else {
+        calendarContainer.style.visibility = 'visible';
+        var birthdayDate = new Date(birthDateParam ?? '2003-03-17');
+        var todayDate = new Date();
+        var ageInWeeks = Math.floor((todayDate - birthdayDate) / (1000 * 60 * 60 * 24 * 7));
+        var weeksContainer = document.getElementById('weeksContainer');
+        var birthContainer = document.getElementById('birth');
+        birthContainer.textContent = birthdayDate.toDateString() + ", " + ageInWeeks + " weeks";
+        
+        weeksContainer.appendChild(document.createElement('div'));
+        
+        for (let i = 1; i <= 52; i++) {
+          let weekNumberDiv = document.createElement('div');
+          weekNumberDiv.textContent = i;
+          weekNumberDiv.className = 'number';
+          weeksContainer.appendChild(weekNumberDiv);
+          if (i % 4 === 0) {
+            let emptyDiv = document.createElement('div');
+            emptyDiv.className = 'empty';
+            weeksContainer.appendChild(emptyDiv);
+          }
+        }
+  
+        for (let i = 0; i < 100 * 52; i++) {
+          if (i % 52 === 0) {
+            let yearNumberDiv = document.createElement('div');
+            yearNumberDiv.className = 'number';
+            yearNumberDiv.textContent = i / 52 + 1;
+            weeksContainer.appendChild(yearNumberDiv);
+          }
+            let weekDiv = document.createElement('div');
+            weekDiv.className = 'square';
+            if (i > ageInWeeks) {
+              weekDiv.style.backgroundColor = '#f0f0f0';
+            }
+            weeksContainer.appendChild(weekDiv);
+            if ((i + 1) % 4 === 0) {
+              let emptyDiv = document.createElement('div');
+              emptyDiv.className = 'empty';
+              weeksContainer.appendChild(emptyDiv);
+            }
+        }
+      }
+    </script>
+  </body>
+</html>
