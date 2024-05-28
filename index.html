@@ -4,16 +4,17 @@
     <meta charset="UTF-8">
     <link rel="icon" href="/favicon.png">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>100 Year Week Calendar</title>
+    <title>Age</title>
     <meta name="description" content="Discover your age in weeks">
-    <meta name="keywords" content="Discover your age in weeks">
-    <meta name="og:title" content="100 Year Week Calendar">
+    <meta name="keywords" content="age, weeks, 100 years">
+    <meta name="og:title" content="Age">
     <meta name="og:description" content="Discover your age in weeks">
     <meta name="og:image" content="/favicon.png">
 
     <style>
       * {
         box-sizing: border-box;
+        margin: 0;
       }
       
       html, body {
@@ -31,17 +32,22 @@
         font-size: 16px;
       }
 
+      h1 {
+        padding: 20px;
+      }
+
       main {
         text-align: center;
-        margin: 20px 10px;
+        padding: 20px 10px;
+        min-height: 100%;
       }
 
       #calendar {
-        visibility: hidden;
+        display: none;
       }
 
       #landing {
-        visibility: hidden;
+        display: none;
       }
 
       #weeksContainer {
@@ -98,15 +104,16 @@
       var landingContainer = document.getElementById('landing');
       var submitButton = document.getElementById('submitButton');
       if (birthDateParam === null) {
-        calendarContainer.style.visibility = 'hidden';
-        landingContainer.style.visibility = 'visible';
+        landingContainer.style.display = 'block';
         submitButton.addEventListener('click', () => {
           var input = document.querySelector('input');
-          var birthDate = input.value;
-          window.location.href = window.location.href + '?bd=' + birthDate;
+          if (!isNaN(new Date(input.value))) {
+            var birthDate = input.value;
+            window.location.href = window.location.href + '?bd=' + birthDate;
+          }
         });
       } else {
-        calendarContainer.style.visibility = 'visible';
+        calendarContainer.style.display = 'block';
         var birthdayDate = new Date(birthDateParam ?? '2003-03-17');
         var todayDate = new Date();
         var ageInWeeks = Math.floor((todayDate - birthdayDate) / (1000 * 60 * 60 * 24 * 7));
