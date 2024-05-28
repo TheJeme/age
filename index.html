@@ -56,6 +56,7 @@
         gap: 6px;
         max-width: 1700px;
         margin: auto;
+        
         * {
           width: 14px;
           height: 14px;
@@ -65,21 +66,8 @@
       .square {
         align-self: center;
         justify-self: center;
-        width: 10px;
-        height: 10px;
         background-color: #000;
         border: 2px solid #000;
-      }
-
-      .empty {
-        width: 10px;
-        height: 10px;
-      }
-
-      .number {
-        text-align: center;
-        width: 16px;
-        height: 16px;
       }
 
     </style>
@@ -126,7 +114,6 @@
         for (let i = 1; i <= 52; i++) {
           let weekNumberDiv = document.createElement('div');
           weekNumberDiv.textContent = i;
-          weekNumberDiv.className = 'number';
           weeksContainer.appendChild(weekNumberDiv);
           if (i % 4 === 0) {
             let emptyDiv = document.createElement('div');
@@ -138,13 +125,13 @@
         for (let i = 0; i < 100 * 52; i++) {
           if (i % 52 === 0) {
             let yearNumberDiv = document.createElement('div');
-            yearNumberDiv.className = 'number';
             yearNumberDiv.textContent = i / 52 + 1;
+            yearNumberDiv.style.width = '24px';
             weeksContainer.appendChild(yearNumberDiv);
           }
             let weekDiv = document.createElement('div');
             weekDiv.className = 'square';
-            if (i > ageInWeeks) {
+            if (i >= ageInWeeks) {
               weekDiv.style.backgroundColor = '#f0f0f0';
             }
             weeksContainer.appendChild(weekDiv);
